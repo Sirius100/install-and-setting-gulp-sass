@@ -15,12 +15,4 @@ gulp.task('sass', () =>
         .pipe(gulp.dest('./css'))
 );
 
-gulp.task('hello', function (){
-    console.log('привет!!!');
-});
 
-// gulp.task('sass', function () {
-//     gulp-ruby-sass('/poligon/**/*.sass')
-//         .pipe(sass())
-//         .pipe(gulp.dest('.poligon/'));
-// });
