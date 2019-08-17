@@ -1,0 +1,39 @@
+var gulp            = require('gulp');
+var sass            = require('gulp-ruby-sass');
+var concat          = require('gulp-concat');
+var prefixer        = require('gulp-autoprefixer');
+var pug             = require('gulp-pug');
+
+
+
+// //объединение файлов *.sass in style.sass
+gulp.task('concat', function () {
+   return gulp.src('../sass/css/*.css')
+       .pipe(concat('style.css'))
+       .pipe(gulp.dest('../css'))
+});
+
+gulp.task('watch', function () {
+    gulp.watch('../sass/*.sass', ['sass']);
+});
+
+//запуск шаблонизатора pug
+//gulp.task('pug', function()  {
+//  return gulp.src('pug/*.pug')
+//  .pipe(pug({
+    // Your options in here.
+//  }))
+//});
+
+//команда запуска препроцессора sass
+//создает сss файл из sass файла
+gulp.task('sass', function () {
+    sass('../sass/*.sass')
+    .on('error', sass.logError)
+        .pipe(gulp.dest('../sass/css/'))
+            .pipe(concat('style.css'))
+            .pipe(prefixer())
+            .pipe(gulp.dest('../css'))
+});
+
+gulp.task('default',['watch']);
