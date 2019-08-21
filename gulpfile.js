@@ -30,7 +30,6 @@ gulp.task('pug', () =>  {
       pretty : true
   }))
   .pipe(gulp.dest('../html/'))
-//  .pipe(plumber({ errorHandler: notify.onError("<%= error.message %>") }))
   .pipe(plumber.stop())  
 });
 
@@ -41,9 +40,9 @@ gulp.task('sass',  () => {
     sass('../sass/*.sass')
     .on('error', sass.logError)
         .pipe(gulp.dest('../sass/css/'))
+        .pipe(sourcemaps.init())
             .pipe(concat('style.css'))
             .pipe(prefixer())
-            .pipe(sourcemaps.init())
             .pipe(sourcemaps.write('../maps'))
             .pipe(gulp.dest('../css'))
 });
