@@ -3,7 +3,8 @@ const sass            = require('gulp-ruby-sass');
 const concat          = require('gulp-concat');
 const prefixer        = require('gulp-autoprefixer');
 const pug             = require('gulp-pug');
-
+const plumber         = require('gulp-plumber');
+const sourcemaps      = require('gulp-sourcemaps');
 
 
 //объединение файлов *.sass in style.sass
@@ -16,17 +17,23 @@ gulp.task('concat',  () => {
 gulp.task('watch', () => {
     gulp.watch('../sass/*.sass', ['sass']);
     gulp.watch('../pug/*.pug', ['pug']);
+    gulp.watch('../pug/template/*.pug', ['pug']);
+    gulp.watch('../pug/template/section/*.pug', ['pug']);
 });
 
 //запуск шаблонизатора pug
 gulp.task('pug', () =>  {
    return gulp.src('../pug/*.pug')
+  .pipe(plumber())
   .pipe(pug({
     // Your options in here.
       pretty : true
   }))
   .pipe(gulp.dest('../html/'))
+//  .pipe(plumber({ errorHandler: notify.onError("<%= error.message %>") }))
+  .pipe(plumber.stop())  
 });
+
 
 //команда запуска препроцессора sass
 //создает сss файл из sass файла
@@ -36,8 +43,9 @@ gulp.task('sass',  () => {
         .pipe(gulp.dest('../sass/css/'))
             .pipe(concat('style.css'))
             .pipe(prefixer())
+            .pipe(sourcemaps.init())
+            .pipe(sourcemaps.write('../maps'))
             .pipe(gulp.dest('../css'))
 });
 
 gulp.task('default',['watch']);
-
